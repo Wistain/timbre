@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "model": "OpenVoice V2 fixed-reference tone color converter",
+  "license": "MIT",
+  "sample_rate": 22050,
+  "n_fft": 1024,
+  "win_length": 1024,
+  "hop_length": 256,
+  "pad_left": 384,
+  "pad_right": 384,
+  "padding": "reflect",
+  "window": "hann_periodic",
+  "center": false,
+  "normalized": false,
+  "onesided": true,
+  "magnitude_epsilon": 1e-06,
+  "feature": "sqrt(real^2+imag^2+1e-6); linear magnitude, no mel/log",
+  "reference_encoder": "ref_encoder.onnx",
+  "encoder_input": {
+    "name": "spec",
+    "dtype": "float32",
+    "shape": [
+      1,
+      513,
+      "frames"
+    ]
+  },
+  "encoder_output": {
+    "name": "embedding",
+    "dtype": "float32",
+    "shape": [
+      1,
+      256,
+      1
+    ]
+  },
+  "converter": "converter.onnx",
+  "converter_inputs": [
+    {
+      "name": "spec",
+      "dtype": "float32",
+      "shape": [
+        1,
+        513,
+        "frames"
+      ]
+    },
+    {
+      "name": "src_se",
+      "dtype": "float32",
+      "shape": [
+        1,
+        256,
+        1
+      ]
+    }
+  ],
+  "converter_output": {
+    "name": "audio",
+    "dtype": "float32",
+    "shape": [
+      1,
+      1,
+      "frames*256"
+    ]
+  },
+  "tau": 0.3,
+  "fixed_target": true,
+  "target_is_embedded_in_converter": true,
+  "reference_seconds": 28.063990929705216,
+  "reference_sha256": "ef6369444a0bfb9ea3f4a1a3bdb4935af498f524ff952e722fa63e4f159c3f64",
+  "checkpoint_sha256": "9652c27e92b6b2a91632590ac9962ef7ae2b712e5c5b7f4c34ec55ee2b37ab9e",
+  "opset": 17,
+  "onnx_runtime_verified": "1.20.0",
+  "source": "https://huggingface.co/myshell-ai/OpenVoiceV2",
+  "strict_f0_preservation": false,
+  "strict_duration_preservation": false,
+  "assets": {
+    "ref_encoder.onnx": {
+      "bytes": 3258511,
+      "sha256": "ed8f2032db0c4f31f70b466b4403b1573ff806bd7a9e81e9337a0a9a902e2762"
+    },
+    "converter.onnx": {
+      "bytes": 128063411,
+      "sha256": "61d4674b10861c72341b006d5cdeefdaaaffc02c5bca33cfc1b970b6e74b03f5"
+    },
+    "reference.wav": {
+      "bytes": 1237666,
+      "sha256": "ef6369444a0bfb9ea3f4a1a3bdb4935af498f524ff952e722fa63e4f159c3f64"
+    }
+  },
+  "reference_asset": "reference.wav",
+  "reference_speech_seconds": 27.663990929705214,
+  "source_video_sha256": "46ed4af57279ffd23983a4dca68e373f18c7ed6f6dde821b67462c0d52b78700",
+  "selection_segments": [
+    {
+      "start": 0.612,
+      "end": 5.148,
+      "gain_db": 6.643609449241453,
+      "prepared_peak_dbfs": -5.211755813582299
+    },
+    {
+      "start": 8.644,
+      "end": 13.468,
+      "gain_db": 5.82167645829741,
+      "prepared_peak_dbfs": -7.704897307572982
+    },
+    {
+      "start": 13.7,
+      "end": 18.332,
+      "gain_db": 5.715430113947823,
+      "prepared_peak_dbfs": -8.090473853865953
+    },
+    {
+      "start": 18.692,
+      "end": 23.484,
+      "gain_db": 3.4494830681573307,
+      "prepared_peak_dbfs": -7.159258911497385
+    },
+    {
+      "start": 23.908,
+      "end": 28.412,
+      "gain_db": 6.776689842853289,
+      "prepared_peak_dbfs": -5.773392962903113
+    },
+    {
+      "start": 28.836,
+      "end": 33.212,
+      "gain_db": 4.642842996026296,
+      "prepared_peak_dbfs": -4.68287596435793
+    }
+  ],
+  "target_embedding_method": "equal mean of six independently encoded speech segments; preview concatenation is not used for embedding",
+  "reference_preparation": "local AAC decode, mono downmix, 44100->22050 resampling; Silero VAD; exclude short candidates and closing card; per-segment scalar RMS gain with 0.95 peak ceiling; 5ms endpoint fades",
+  "source_separation": false,
+  "target_revision": "video-speech-segments-v2",
+  "selected_speech_seconds": 27.663990929705214
+}
